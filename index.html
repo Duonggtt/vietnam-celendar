@@ -1021,36 +1021,57 @@ const LUN_HOL=[
 
 function buildYear(year){
   let ev=[];
+  
+  // Thêm các ngày lễ dương lịch
   SOL_HOL.forEach(h=>{
-    ev.push({date:new Date(year,h.m-1,h.d),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:true});
+    ev.push({
+      date:new Date(year,h.m-1,h.d),
+      name:h.name,
+      t:h.t,
+      np:h.np,
+      desc:h.desc,
+      solar:true
+    });
   });
-  LUN_HOL.forEach(h=>{
-    for(let ly=year-1;ly<=year+1;ly++){
+  
+  // Thêm các ngày lễ âm lịch
+  // Xét cả năm âm lịch trước và sau để đảm bảo không bỏ sót
+  for(let lunarYear=year-1;lunarYear<=year+1;lunarYear++){
+    LUN_HOL.forEach(h=>{
       try{
         let lunarDay=h.ld;
         let lunarMonth=h.lm;
+        let isLeap=0;
         
         // Xử lý đặc biệt cho ngày 30 Tết
         if(lunarDay===30 && lunarMonth===12){
-          let monthDays=getLunarMonthDays(lunarMonth,ly);
-          if(monthDays===29){
-            lunarDay=29; // Tháng chạp chỉ có 29 ngày -> dùng 29 làm Tất Niên
+          let monthDays=getLunarMonthDays(lunarMonth,lunarYear,0);
+          if(monthDays<30){
+            lunarDay=monthDays; // Dùng ngày cuối cùng của tháng
           }
         }
         
-        let [sd,sm,sy]=lun2Sol(lunarDay,lunarMonth,ly,0);
-        if(sy===year && sd>0){
+        // Kiểm tra số ngày trong tháng trước khi chuyển đổi
+        let monthDays=getLunarMonthDays(lunarMonth,lunarYear,isLeap);
+        if(lunarDay>monthDays){
+          return; // Bỏ qua nếu ngày không hợp lệ
+        }
+        
+        let [solarDay,solarMonth,solarYear]=lun2Sol(lunarDay,lunarMonth,lunarYear,isLeap);
+        
+        // Chỉ thêm nếu rơi vào năm đang xét và ngày hợp lệ
+        if(solarYear===year && solarDay>0){
           let eventName=h.name;
           let ldate=`${h.ld}/${h.lm} âm`;
           
-          // Cập nhật tên nếu 30 Tết thành 29 Tết  
-          if(h.ld===30 && h.lm===12 && lunarDay===29){
-            eventName=eventName.replace('30 Tết','29 Tết');
-            ldate=`29/12 âm`;
+          // Cập nhật tên nếu 30 Tết thành ngày khác
+          if(h.ld===30 && h.lm===12 && lunarDay!==30){
+            eventName=eventName.replace('30 Tết',lunarDay+' Tết');
+            ldate=`${lunarDay}/12 âm`;
           }
           
           ev.push({
-            date:new Date(sy,sm-1,sd),
+            date:new Date(solarYear,solarMonth-1,solarDay),
             name:eventName,
             t:h.t,
             np:h.np,
@@ -1059,11 +1080,22 @@ function buildYear(year){
             ldate:ldate
           });
         }
-      }catch(e){}
-    }
-  });
+      }catch(e){
+        // Bỏ qua lỗi chuyển đổi
+      }
+    });
+  }
+  
+  // Loại bỏ trùng lặp (cùng ngày dương lịch + cùng tên sự kiện)
   let seen=new Set();
-  ev=ev.filter(e=>{let k=e.date.toDateString()+e.name;if(seen.has(k))return false;seen.add(k);return true;});
+  ev=ev.filter(e=>{
+    let key=e.date.toDateString()+e.name;
+    if(seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
+  
+  // Sắp xếp theo thứ tự thời gian
   return ev.sort((a,b)=>a.date-b.date);
 }
 
