@@ -795,53 +795,109 @@ function newMoon(k){
 }
 
 function sunLong(jdn){
-  let T=(jdn-2451545)/36525,T2=T*T,dr=Math.PI/180;
-  let M=357.5291+35999.0503*T-0.0001559*T2;
-  let L=280.46645+36000.76983*T+0.0003032*T2;
-  let DL=(1.9146-0.004817*T-0.000014*T2)*Math.sin(dr*M)+(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.00029*Math.sin(dr*3*M);
-  let lam=L+DL-0.00569-0.00478*Math.sin((125.04-1934.136*T)*dr);
-  let th=lam*dr; th-=Math.PI*2*Math.floor(th/(Math.PI*2)); if(th<0) th+=Math.PI*2;
-  return Math.floor(th/Math.PI*6);
+  let T=(jdn-2451545.0)/36525,T2=T*T,dr=Math.PI/180;
+  let M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+  let L0=280.46645+36000.76983*T+0.0003032*T2;
+  let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);
+  DL+=(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
+  let L=L0+DL;
+  L=L-360*Math.floor(L/360);
+  return Math.floor(L/30);
 }
 
-function getNMDay(k,tz){return Math.floor(newMoon(k)+0.5+tz/24);}
+function getNMDay(k,tz){return Math.floor(newMoon(k)+0.5+tz/24.0);}
 
 function getLM11(yy,tz){
-  let k=Math.floor((yy-1900)*12.3685),nm=getNMDay(k,tz);
-  if(sunLong(nm-0.5-tz/24)>=9) nm=getNMDay(k-1,tz);
+  let off=jdFromDate(31,12,yy)-2415021.076998695;
+  let k=Math.floor(off/29.530588853);
+  let nm=getNMDay(k,tz);
+  let sunL=sunLong(nm);
+  if(sunL>=9){
+    nm=getNMDay(k-1,tz);
+  }
   return nm;
 }
 
-function isLeap(k,tz){return sunLong(getNMDay(k,tz)-0.5-tz/24)!==sunLong(getNMDay(k+1,tz)-0.5-tz/24);}
+function getLeapMonthOffset(a11,b11,tz){
+  let k=Math.floor(0.5+(a11-2415021.076998695)/29.530588853);
+  let last=0,i=1;
+  let arc=sunLong(getNMDay(k+i,tz));
+  do{
+    last=arc;
+    i++;
+    arc=sunLong(getNMDay(k+i,tz));
+  }while(arc!==last && i<14);
+  return i-1;
+}
 
 function sol2Lun(dd,mm,yy,tz){
-  let dn=jdFromDate(dd,mm,yy);
-  let k=Math.floor((dn-2415021.076998695)/29.530588853);
-  let ms=getNMDay(k+1,tz); if(ms>dn) ms=getNMDay(k,tz);
-  let a11=getLM11(yy,tz),b11=a11;
-  let ly,ll=0,lm,ld=dn-ms+1;
-  if(a11>=ms){ly=yy;a11=getLM11(yy-1,tz);}else{ly=yy+1;b11=getLM11(yy+1,tz);}
-  let diff=Math.floor((ms-a11)/29); lm=diff+11;
+  let dayNumber=jdFromDate(dd,mm,yy);
+  let k=Math.floor((dayNumber-2415021.076998695)/29.530588853);
+  let monthStart=getNMDay(k+1,tz);
+  if(monthStart>dayNumber){
+    monthStart=getNMDay(k,tz);
+  }
+  let a11=getLM11(yy,tz);
+  let b11=a11;
+  if(a11>=monthStart){
+    let lunarYear=yy;
+    a11=getLM11(yy-1,tz);
+    return convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz);
+  }else{
+    let lunarYear=yy+1;
+    b11=getLM11(yy+1,tz);
+    return convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz);
+  }
+}
+
+function convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz){
+  let lunarDay=dayNumber-monthStart+1;
+  let diff=Math.floor((monthStart-a11)/29);
+  let lunarLeap=0;
+  let lunarMonth=diff+11;
   if(b11-a11>365){
-    let lmd=Math.floor((ms-a11)/29);
-    for(let i=0;i<=lmd;i++){
-      if(isLeap(k-diff+i,tz)){
-        if(i===lmd-1){ll=1;lm--;break;}else if(i<lmd-1) lm--;
+    let leapMonthDiff=getLeapMonthOffset(a11,b11,tz);
+    if(diff>=leapMonthDiff){
+      lunarMonth=diff+10;
+      if(diff===leapMonthDiff){
+        lunarLeap=1;
       }
     }
   }
-  if(lm>12) lm-=12;
-  if(lm>=11&&diff<4) ly--;
-  return[ld,lm,ly,ll];
+  if(lunarMonth>12){
+    lunarMonth=lunarMonth-12;
+  }
+  if(lunarMonth>=11&&diff<4){
+    lunarYear-=1;
+  }
+  return[lunarDay,lunarMonth,lunarYear,lunarLeap];
 }
 
-function lun2Sol(ld,lm,ly){
-  let k=Math.floor((ly-1900)*12.3685);
-  let a11=getLM11(ly,TZ);
-  let off=lm-11; if(off<0) off+=12;
-  let nm=getNMDay(k+off,TZ);
-  while(nm<=a11) nm=getNMDay(++k,TZ);
-  return jdToDate(nm+ld-1);
+function lun2Sol(ld,lm,ly,leap){
+  if(lm<11){
+    ly=ly+1;
+  }
+  let a11=getLM11(ly-1,TZ);
+  let b11=getLM11(ly,TZ);
+  let k=Math.floor(0.5+(a11-2415021.076998695)/29.530588853);
+  let off=lm-11;
+  if(off<0){
+    off+=12;
+  }
+  if(b11-a11>365){
+    let leapOff=getLeapMonthOffset(a11,b11,TZ);
+    let leapMonth=leapOff-2;
+    if(leapMonth<0){
+      leapMonth+=12;
+    }
+    if(leap&&lm!==leapMonth){
+      return[0,0,0];
+    }else if(leap||off>=leapOff){
+      off+=1;
+    }
+  }
+  let monthStart=getNMDay(k+off,TZ);
+  return jdToDate(monthStart+ld-1);
 }
 
 // =================== CAN CHI ===================
@@ -900,8 +956,8 @@ function buildYear(year){
   LUN_HOL.forEach(h=>{
     for(let ly=year-1;ly<=year;ly++){
       try{
-        let [sd,sm,sy]=lun2Sol(h.ld,h.lm,ly);
-        if(sy===year){
+        let [sd,sm,sy]=lun2Sol(h.ld,h.lm,ly,0);
+        if(sy===year && sd>0){
           ev.push({date:new Date(year,sm-1,sd),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:false,ldate:`${h.ld}/${h.lm} âm`});
         }
       }catch(e){}
