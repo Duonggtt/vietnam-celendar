@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch Việt Nam – Âm Dương & Sự Kiện</title>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --do: #c0392b; --do-dam: #922b21; --do-nhat: #f5b7b1;
+  --vang: #d4a017; --vang-nhat: #fef3cd;
+  --xanh-la: #1e8449; --xanh-duong: #1a5276;
+  --nen: #fdf6ec; --chu: #2c1810; --chu-nhat: #7d6355;
+  --border: #e8d5c0; --shadow: rgba(44,24,16,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: var(--nen);
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--chu);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(253,246,236,0.92) 0%, rgba(253,246,236,0.82) 40%, rgba(253,246,236,0.9) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  body { background-attachment: scroll; }
+}
+
+/* ===== BACKGROUND PATTERNS ===== */
+.bg-canvas {
+  position: fixed; inset: 0; pointer-events: none;
+  z-index: 0; overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, #7b1111 0%, #c0392b 45%, #8b1a1a 100%);
+  color: #fff; position: relative; overflow: hidden;
+  box-shadow: 0 6px 32px rgba(139,26,26,0.5); z-index: 10;
+}
+
+header::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255,218,0,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(255,218,0,0.06) 0%, transparent 40%),
+    repeating-conic-gradient(rgba(255,255,255,0.02) 0deg 15deg, transparent 15deg 30deg);
+  background-size: 100% 100%, 100% 100%, 60px 60px;
+}
+
+header::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #ffda00 20%, #ffe44d 50%, #ffda00 80%, transparent 100%);
+}
+
+.header-inner {
+  max-width: 1240px; margin: 0 auto; padding: 20px 24px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; position: relative; z-index: 1;
+}
+
+.logo-area { display: flex; align-items: center; gap: 16px; }
+
+.flag-icon {
+  width: 56px; height: 38px; background: #da251d;
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35); flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.flag-star {
+  width: 22px; height: 22px; background: #ffff00;
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  animation: starPulse 3s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+  0%,100%{filter:drop-shadow(0 1px 4px rgba(255,255,0,0.5));}
+  50%{filter:drop-shadow(0 2px 12px rgba(255,255,0,1));}
+}
+
+.logo-text h1 {
+  font-family: 'Philosopher', serif; font-size: 1.85rem;
+  font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.logo-text p { font-size: 0.74rem; opacity: 0.82; letter-spacing: 1.8px; text-transform: uppercase; margin-top: 3px; }
+
+.header-time { text-align: right; }
+
+.clock-display {
+  font-family: 'Philosopher', serif; font-size: 2.4rem;
+  font-weight: 700; letter-spacing: 3px; line-height: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.date-display { font-size: 0.79rem; opacity: 0.85; margin-top: 4px; }
+
+/* ===== BANNER ===== */
+.today-banner {
+  background: linear-gradient(90deg, #a07010, #d4a017, #e8c429, #d4a017, #a07010);
+  background-size: 300% 100%;
+  color: #180f00; text-align: center; padding: 9px 24px;
+  font-weight: 600; font-size: 0.86rem; position: relative; z-index: 9;
+  animation: bannerMove 8s linear infinite;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+
+@keyframes bannerMove { 0%{background-position:0%} 100%{background-position:300%} }
+
+/* ===== MAIN LAYOUT ===== */
+.main-wrap {
+  max-width: 1240px; margin: 0 auto; padding: 22px 18px;
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 22px; position: relative; z-index: 1;
+}
+
+@media (max-width: 900px) { .main-wrap { grid-template-columns: 1fr; } }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  background: white; border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 16px var(--shadow);
+  padding: 12px 16px; margin-bottom: 16px;
+  display: flex; flex-wrap: wrap; gap: 7px; align-items: center;
+}
+
+.filter-label {
+  font-size: 0.72rem; font-weight: 800; color: var(--chu-nhat);
+  text-transform: uppercase; letter-spacing: 1px; margin-right: 2px; white-space: nowrap;
+}
+
+.filter-chip {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid var(--border); background: white;
+  cursor: pointer; font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.75rem; font-weight: 600; color: var(--chu-nhat);
+  transition: all 0.18s; user-select: none; white-space: nowrap;
+}
+
+.filter-chip:hover { border-color: var(--do); color: var(--do); }
+
+.filter-chip.active { color: white !important; border-color: transparent; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.filter-chip[data-f="all"].active  { background:#888; }
+.filter-chip[data-f="tet"].active  { background:#c0392b; }
+.filter-chip[data-f="nghi"].active { background:#1e8449; }
+.filter-chip[data-f="le"].active   { background:#c9930a; }
+.filter-chip[data-f="cn"].active   { background:#c0392b; }
+.filter-chip[data-f="t7"].active   { background:#1a5276; }
+.filter-chip[data-f="am"].active   { background:#7d3c98; }
+.filter-chip[data-f="dim"].active  { background:#555; }
+
+.fdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.fdiv { width:1px; height:22px; background:var(--border); margin:0 2px; }
+
+/* ===== CALENDAR CARD ===== */
+.calendar-card {
+  background: white; border-radius: 16px;
+  box-shadow: 0 4px 32px var(--shadow);
+  overflow: visible; border: 1px solid var(--border);
+  position: relative;
+}
+
+.cal-header {
+  background: linear-gradient(135deg, #8b1a1a, #c0392b);
+  color: white; padding: 15px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 16px 16px 0 0; position: relative;
+}
+
+.cal-nav-btn {
+  background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28);
+  color: white; width: 38px; height: 38px; border-radius: 50%;
+  cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+
+.cal-nav-btn:hover { background: rgba(255,255,255,0.32); transform: scale(1.1); }
+
+/* MONTH TITLE – clickable */
+.cal-month-title {
+  text-align: center; flex: 1; cursor: pointer;
+  border-radius: 10px; padding: 6px 14px;
+  transition: background 0.18s; position: relative;
+  user-select: none;
+}
+
+.cal-month-title:hover { background: rgba(255,255,255,0.14); }
+
+.month-name { font-family: 'Philosopher', serif; font-size: 1.45rem; font-weight: 700; }
+.year-name  { font-size: 0.77rem; opacity: 0.85; margin-top: 1px; }
+
+.pick-hint {
+  font-size: 0.62rem; opacity: 0.7; letter-spacing: 1px;
+  text-transform: uppercase; margin-top: 3px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+
+/* ===== DATE PICKER DROPDOWN ===== */
+.dp-wrap {
+  position: absolute; top: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%);
+  z-index: 200; display: none;
+}
+
+.dp-wrap.open { display: block; animation: dropIn 0.2s ease; }
+
+@keyframes dropIn {
+  from { opacity:0; transform:translateX(-50%) translateY(-10px); }
+  to   { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+
+.dp-box {
+  background: white; border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 50px rgba(44,24,16,0.28);
+  padding: 18px 20px; min-width: 290px;
+}
+
+.dp-title {
+  font-family: 'Philosopher', serif; font-size: 0.95rem;
+  font-weight: 700; color: var(--do); text-align: center;
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.dp-row {
+  display: flex; gap: 10px; margin-bottom: 10px; align-items: center;
+}
+
+.dp-row label { font-size: 0.74rem; color: var(--chu-nhat); font-weight: 600; min-width: 55px; }
+
+.dp-sel {
+  flex: 1; padding: 7px 10px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem; color: var(--chu); background: white; cursor: pointer;
+}
+
+.dp-sel:focus { outline: none; border-color: var(--do); }
+
+.dp-lunar-info {
+  background: var(--vang-nhat); border: 1px solid #ddb82a;
+  border-radius: 8px; padding: 8px 12px; margin: 10px 0;
+  text-align: center; font-size: 0.82rem; color: var(--do-dam); font-weight: 700;
+}
+
+.dp-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+.dp-btn {
+  flex: 1; padding: 8px; border-radius: 9px; border: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.18s;
+}
+
+.dp-btn.ok  { background: var(--do); color: white; }
+.dp-btn.ok:hover  { background: var(--do-dam); }
+.dp-btn.no  { background: #f0e5dc; color: var(--chu-nhat); }
+.dp-btn.no:hover  { background: #e5d4c8; }
+
+/* ===== DAYS HEADER ===== */
+.cal-days-header {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  background: #faf0e8; border-bottom: 1px solid var(--border);
+}
+
+.day-header {
+  text-align: center; padding: 9px 4px;
+  font-size: 0.71rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px; color: var(--chu-nhat);
+}
+
+.day-header:first-child { color: var(--do); }
+.day-header:last-child { color: var(--xanh-duong); }
+
+/* ===== GRID ===== */
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); }
+
+.cal-cell {
+  border: 0.5px solid #f0e8de; min-height: 82px;
+  padding: 5px; cursor: pointer; transition: all 0.15s;
+  position: relative; background: white;
+}
+
+.cal-cell:hover { background: #fff9f0 !important; z-index:1; box-shadow:0 2px 14px rgba(192,57,43,0.18); }
+
+.cal-cell.other-month { background: #fdf8f5; opacity: 0.45; }
+
+.cal-cell.today {
+  background: linear-gradient(135deg, #fff0ee, #ffe4e0) !important;
+  border: 2px solid var(--do) !important; z-index: 2;
+}
+
+.cal-cell.holiday { background: linear-gradient(135deg, #fff4f4, #ffe8e8); }
+
+/* Filter highlights */
+.cal-cell.hl-tet  { background: linear-gradient(135deg, #fff1ea, #ffe2cc) !important; }
+.cal-cell.hl-nghi { background: linear-gradient(135deg, #edfff2, #d2f5dc) !important; }
+.cal-cell.hl-le   { background: linear-gradient(135deg, #fffde5, #fff5a8) !important; }
+.cal-cell.hl-cn   { background: linear-gradient(135deg, #fff4f4, #ffd8d8) !important; }
+.cal-cell.hl-t7   { background: linear-gradient(135deg, #f0f5ff, #d8e8ff) !important; }
+.cal-cell.hl-am   { background: linear-gradient(135deg, #f8f0ff, #ead8ff) !important; }
+.cal-cell.dimmed  { opacity: 0.22 !important; }
+
+.solar-num {
+  font-family: 'Philosopher', serif; font-size: 1.22rem;
+  font-weight: 700; color: var(--chu); line-height: 1;
+}
+
+.cal-cell.sunday  .solar-num { color: var(--do); }
+.cal-cell.saturday .solar-num { color: var(--xanh-duong); }
+.cal-cell.holiday .solar-num { color: var(--do); }
+
+.lunar-num { font-size: 0.66rem; color: var(--chu-nhat); margin-top: 2px; font-weight: 500; }
+
+.event-tag {
+  font-size: 0.57rem; color: white; border-radius: 3px;
+  padding: 1px 4px; margin-top: 3px; display: block;
+  font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.event-tag.tet  { background: #c0392b; }
+.event-tag.nghi { background: #1e8449; }
+.event-tag.le   { background: #c9930a; }
+.event-tag.am   { background: #7d3c98; }
+
+.am-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 5px; height: 5px; border-radius: 50%; background: #9b59b6;
+}
+
+/* ===== LEGEND ===== */
+.cal-footer {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 11px 16px; background: #faf5ee;
+  border-top: 1px solid var(--border); border-radius: 0 0 16px 16px;
+}
+
+.leg { display: flex; align-items: center; gap: 4px; font-size: 0.68rem; color: var(--chu-nhat); font-weight: 500; }
+.leg-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+.today-btn {
+  margin-left: auto; background: var(--do); color: white;
+  border: none; border-radius: 20px; padding: 4px 14px;
+  font-family: 'Be Vietnam Pro', sans-serif; font-size: 0.74rem;
+  font-weight: 700; cursor: pointer; transition: all 0.18s;
+}
+
+.today-btn:hover { background: var(--do-dam); }
+
+/* ===== SIDEBAR ===== */
+.today-info-card {
+  background: white; border-radius: 16px;
+  box-shadow: 0 4px 32px var(--shadow);
+  border: 1px solid var(--border); overflow: hidden;
+}
+
+.info-header {
+  background: linear-gradient(135deg, #8b1a1a, #c0392b);
+  color: white; padding: 13px 18px;
+  font-family: 'Philosopher', serif; font-size: 1rem; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.info-body { padding: 16px; }
+
+.info-big-date {
+  text-align: center; margin-bottom: 14px;
+  padding-bottom: 14px; border-bottom: 1px dashed var(--border);
+}
+
+.solar-big {
+  font-family: 'Philosopher', serif; font-size: 3.4rem;
+  font-weight: 700; color: var(--do); line-height: 1;
+}
+
+.solar-big-sub { font-size: 0.8rem; color: var(--chu-nhat); margin-top: 4px; }
+
+.lunar-big {
+  margin-top: 10px; background: var(--vang-nhat);
+  border: 1px solid var(--vang); border-radius: 10px;
+  padding: 8px 16px; display: inline-block;
+}
+
+.lunar-big-num {
+  font-family: 'Philosopher', serif; font-size: 1.2rem;
+  font-weight: 700; color: var(--do-dam);
+}
+
+.lunar-big-label { font-size: 0.68rem; color: var(--chu-nhat); margin-top: 1px; }
+
+.info-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 7px 0; border-bottom: 1px solid #f5ece4;
+  font-size: 0.8rem; gap: 8px;
+}
+
+.info-row:last-child { border-bottom: none; }
+.info-label { color: var(--chu-nhat); font-weight: 500; flex-shrink: 0; min-width: 90px; }
+.info-value { font-weight: 600; color: var(--chu); text-align: right; flex: 1; }
+.info-value.red  { color: var(--do); }
+.info-value.gold { color: var(--vang); }
+
+/* ===== EVENTS PANEL ===== */
+.events-panel {
+  background: white; border-radius: 16px;
+  box-shadow: 0 4px 32px var(--shadow);
+  border: 1px solid var(--border); overflow: hidden; margin-top: 18px;
+}
+
+.events-tabs { display: flex; background: #faf0e8; border-bottom: 1px solid var(--border); }
+
+.tab-btn {
+  flex: 1; padding: 11px 6px; background: none; border: none;
+  cursor: pointer; font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.74rem; font-weight: 600; color: var(--chu-nhat);
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+}
+
+.tab-btn.active { color: var(--do); border-bottom-color: var(--do); background: white; }
+
+.tab-content { padding: 13px; max-height: 380px; overflow-y: auto; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+.event-item {
+  display: flex; gap: 10px; padding: 9px 0;
+  border-bottom: 1px solid #f5ece4; align-items: flex-start;
+  animation: fadeIn 0.3s ease;
+}
+
+.event-item:last-child { border-bottom: none; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+.edot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+
+.ev-name  { font-size:0.82rem; font-weight:600; color:var(--chu); }
+.ev-date  { font-size:0.7rem; color:var(--chu-nhat); margin-top:2px; }
+.ev-badge {
+  font-size:0.65rem; color:white; border-radius:3px;
+  padding:1px 5px; display:inline-block; margin-top:3px; font-weight:700;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(44,24,16,0.6); z-index: 1000; backdrop-filter: blur(4px);
+}
+
+.modal-overlay.open { display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.2s ease; }
+
+.modal-box {
+  background: white; border-radius: 18px; max-width: 460px; width: 100%;
+  overflow: hidden; box-shadow: 0 20px 60px rgba(44,24,16,0.3);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+.modal-hdr {
+  background: linear-gradient(135deg, #8b1a1a, #c0392b); color: white;
+  padding: 17px 22px; display: flex; justify-content: space-between; align-items: center;
+}
+
+.modal-title { font-family:'Philosopher',serif; font-size:1.15rem; font-weight:700; }
+
+.modal-close {
+  background: rgba(255,255,255,0.2); border:none; color:white;
+  width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+}
+.modal-close:hover { background:rgba(255,255,255,0.35); }
+
+.modal-body { padding: 22px; }
+
+.modal-day { font-family:'Philosopher',serif; font-size:3rem; font-weight:700; color:var(--do); text-align:center; line-height:1; }
+.modal-sub { text-align:center; color:var(--chu-nhat); font-size:0.82rem; margin-top:4px; margin-bottom:16px; }
+
+.modal-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f5ece4; font-size:0.82rem; }
+.modal-row:last-child { border-bottom:none; }
+.modal-row .lb { color:var(--chu-nhat); font-weight:500; }
+.modal-row .vl { font-weight:700; color:var(--chu); text-align:right; max-width:58%; }
+.modal-row .vl.hl { color:var(--do); }
+
+.modal-events { margin-top:16px; border-top:1px dashed var(--border); padding-top:14px; }
+.modal-ev-title { font-weight:800; font-size:0.85rem; color:var(--chu); margin-bottom:10px; }
+
+.modal-ev-item { border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:#fdf6ec; }
+::-webkit-scrollbar-thumb { background:#e8c4a0; border-radius:10px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:640px) {
+  .cal-cell { min-height:60px; padding:4px; }
+  .solar-num { font-size:1rem; }
+  .lunar-num { font-size:0.57rem; }
+  .event-tag { font-size:0.52rem; }
+  .logo-text h1 { font-size:1.3rem; }
+  .clock-display { font-size:1.8rem; }
+  .filter-bar { padding:10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NỀN HOA VĂN -->
+<div class="bg-canvas" id="bgCanvas"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="flag-icon"><div class="flag-star"></div></div>
+      <div class="logo-text">
+        <h1>Lịch Việt Nam</h1>
+        <p>Âm lịch · Dương lịch · Sự kiện · Ngày lễ</p>
+      </div>
+    </div>
+    <div class="header-time">
+      <div class="clock-display" id="clockDisplay">00:00:00</div>
+      <div class="date-display" id="dateDisplay">--</div>
+    </div>
+  </div>
+</header>
+
+<div class="today-banner" id="todayBanner">⭐ Đang tải thông tin hôm nay...</div>
+
+<div class="main-wrap">
+  <div>
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <span class="filter-label">🔍 Lọc:</span>
+      <button class="filter-chip active" data-f="all" onclick="setFilter('all')">
+        <span class="fdot" style="background:#888"></span>Tất cả
+      </button>
+      <div class="fdiv"></div>
+      <button class="filter-chip" data-f="tet" onclick="setFilter('tet')">
+        <span class="fdot" style="background:#c0392b"></span>🧧 Tết
+      </button>
+      <button class="filter-chip" data-f="nghi" onclick="setFilter('nghi')">
+        <span class="fdot" style="background:#1e8449"></span>🟢 Nghỉ lễ
+      </button>
+      <button class="filter-chip" data-f="le" onclick="setFilter('le')">
+        <span class="fdot" style="background:#c9930a"></span>⭐ Kỷ niệm
+      </button>
+      <button class="filter-chip" data-f="am" onclick="setFilter('am')">
+        <span class="fdot" style="background:#7d3c98"></span>🌙 Ngày âm
+      </button>
+      <div class="fdiv"></div>
+      <button class="filter-chip" data-f="cn" onclick="setFilter('cn')">
+        <span class="fdot" style="background:#c0392b"></span>Chủ nhật
+      </button>
+      <button class="filter-chip" data-f="t7" onclick="setFilter('t7')">
+        <span class="fdot" style="background:#1a5276"></span>Thứ 7
+      </button>
+      <div class="fdiv"></div>
+      <button class="filter-chip" data-f="dim" onclick="setFilter('dim')" title="Làm mờ ngày không khớp filter đang chọn">
+        <span class="fdot" style="background:#555"></span>Làm mờ khác
+      </button>
+    </div>
+
+    <!-- CALENDAR CARD -->
+    <div class="calendar-card">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="prevMonth">&#8249;</button>
+
+        <div class="cal-month-title" id="calMonthTitle" onclick="toggleDP(event)">
+          <div class="month-name" id="calMonthName">Tháng --</div>
+          <div class="year-name" id="calYearName">Năm --</div>
+          <div class="pick-hint">▾ nhấn để chọn tháng / năm</div>
+
+          <!-- DATE PICKER -->
+          <div class="dp-wrap" id="dpWrap" onclick="event.stopPropagation()">
+            <div class="dp-box">
+              <div class="dp-title">📅 Chọn Tháng &amp; Năm</div>
+              <div class="dp-row">
+                <label>Tháng</label>
+                <select class="dp-sel" id="dpMonth"></select>
+              </div>
+              <div class="dp-row">
+                <label>Năm DL</label>
+                <select class="dp-sel" id="dpYear"></select>
+              </div>
+              <div class="dp-lunar-info" id="dpLunarInfo">--</div>
+              <div class="dp-actions">
+                <button class="dp-btn no" onclick="closeDP()">Huỷ</button>
+                <button class="dp-btn ok" onclick="applyDP()">Xem lịch ✓</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="cal-nav-btn" id="nextMonth">&#8250;</button>
+      </div>
+
+      <div class="cal-days-header">
+        <div class="day-header">CN</div><div class="day-header">T2</div>
+        <div class="day-header">T3</div><div class="day-header">T4</div>
+        <div class="day-header">T5</div><div class="day-header">T6</div>
+        <div class="day-header">T7</div>
+      </div>
+
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="cal-footer">
+        <span class="leg"><span class="leg-dot" style="background:#c0392b"></span>Tết / Nghỉ lễ</span>
+        <span class="leg"><span class="leg-dot" style="background:#1e8449"></span>Nghỉ bù</span>
+        <span class="leg"><span class="leg-dot" style="background:#c9930a"></span>Kỷ niệm</span>
+        <span class="leg"><span class="leg-dot" style="background:#7d3c98"></span>Ngày âm đặc biệt</span>
+        <button class="today-btn" onclick="goToday()">Hôm nay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div>
+    <div class="today-info-card">
+      <div class="info-header">📅 Thông Tin Ngày Hôm Nay</div>
+      <div class="info-body">
+        <div class="info-big-date">
+          <div class="solar-big" id="todaySolarBig">--</div>
+          <div class="solar-big-sub" id="todaySolarSub">--</div>
+          <div style="margin-top:10px;">
+            <div class="lunar-big">
+              <div class="lunar-big-num" id="todayLunarBig">-- tháng --</div>
+              <div class="lunar-big-label">Âm lịch</div>
+            </div>
+          </div>
+        </div>
+        <div id="todayInfoRows"></div>
+      </div>
+    </div>
+
+    <div class="events-panel">
+      <div class="events-tabs">
+        <button class="tab-btn active" data-tab="upcoming">Sắp tới</button>
+        <button class="tab-btn" data-tab="month">Tháng này</button>
+        <button class="tab-btn" data-tab="year">Cả năm</button>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab-upcoming"></div>
+        <div class="tab-pane" id="tab-month"></div>
+        <div class="tab-pane" id="tab-year"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <span class="modal-title" id="modalTitle">Chi tiết ngày</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// =================== BACKGROUND PATTERN ===================
+function drawBG() {
+  const W=window.innerWidth, H=window.innerHeight;
+
+  // Hoa sen SVG
+  const lotus=(x,y,r,c)=>{
+    let p='';
+    for(let i=0;i<8;i++) p+=`<ellipse cx="0" cy="${-r*0.68}" rx="${r*0.22}" ry="${r*0.48}" transform="rotate(${i*45})" fill="${c}" opacity="0.55"/>`;
+    p+=`<circle cx="0" cy="0" r="${r*0.17}" fill="${c}" opacity="0.7"/>`;
+    return `<g transform="translate(${x},${y})">${p}</g>`;
+  };
+
+  // Trống đồng
+  const dong=(x,y,r,c)=>{
+    let p=`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`;
+    p+=`<circle cx="${x}" cy="${y}" r="${r*0.6}" fill="none" stroke="${c}" stroke-width="1" opacity="0.4"/>`;
+    p+=`<circle cx="${x}" cy="${y}" r="${r*0.25}" fill="${c}" opacity="0.3"/>`;
+    for(let i=0;i<12;i++){
+      let a=(i/12)*Math.PI*2;
+      let x1=x+Math.cos(a)*r*0.62, y1=y+Math.sin(a)*r*0.62;
+      let x2=x+Math.cos(a)*r*0.92, y2=y+Math.sin(a)*r*0.92;
+      p+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="0.8" opacity="0.4"/>`;
+    }
+    return `<g>${p}</g>`;
+  };
+
+  // Tre bamboo
+  const tre=(x,h,c)=>{
+    let p=`<rect x="${x-3}" y="${100}" width="6" height="${h-100}" rx="3" fill="${c}" opacity="0.25"/>`;
+    let nCount=Math.floor((h-100)/45);
+    for(let i=0;i<nCount;i++) p+=`<rect x="${x-3}" y="${100+i*45+40}" width="6" height="4" rx="2" fill="${c}" opacity="0.35"/>`;
+    // lá
+    for(let i=0;i<4;i++) p+=`<ellipse cx="${x+(i%2===0?18:-18)}" cy="${100+i*80+20}" rx="18" ry="6" transform="rotate(${i%2===0?-25:25},${x+(i%2===0?18:-18)},${100+i*80+20})" fill="${c}" opacity="0.2"/>`;
+    return `<g>${p}</g>`;
+  };
+
+  let svg=`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" opacity="0.065">`;
+
+  // Góc hoa văn
+  const flowers=[
+    [70,70,55,'#c0392b'],[W-70,70,50,'#d4a017'],
+    [70,H-90,48,'#d4a017'],[W-70,H-90,52,'#c0392b'],
+    [W/2,60,42,'#c0392b'],[W/2,H-60,40,'#d4a017'],
+    [W*0.25,H*0.25,30,'#d4a017'],[W*0.75,H*0.25,28,'#c0392b'],
+    [W*0.2,H*0.75,28,'#c0392b'],[W*0.8,H*0.75,30,'#d4a017'],
+    [160,H/2,24,'#c0392b'],[W-160,H/2,24,'#d4a017'],
+  ];
+  flowers.forEach(([x,y,r,c])=>{ svg+=lotus(x,y,r,c); });
+
+  // Trống đồng
+  svg+=dong(W*0.08,H*0.1,50,'#c0392b');
+  svg+=dong(W*0.92,H*0.9,48,'#d4a017');
+  svg+=dong(W*0.5,H*0.5,65,'#c0392b');
+  svg+=dong(W*0.15,H*0.55,35,'#d4a017');
+  svg+=dong(W*0.85,H*0.45,35,'#c0392b');
+
+  // Tre hai bên
+  svg+=tre(30,H,'#1e8449');
+  svg+=tre(W-30,H,'#1e8449');
+
+  // Viền góc kiểu á đông
+  const bc='#c0392b', gc='#d4a017';
+  const cornerSize=110;
+  svg+=`
+    <polyline points="0,${cornerSize} 0,0 ${cornerSize},0" fill="none" stroke="${bc}" stroke-width="3" opacity="0.5"/>
+    <polyline points="${cornerSize-20},0 ${cornerSize-20},20 20,20 20,${cornerSize-20} 0,${cornerSize-20}" fill="none" stroke="${bc}" stroke-width="1.5" opacity="0.3"/>
+    <polyline points="${W},${cornerSize} ${W},0 ${W-cornerSize},0" fill="none" stroke="${gc}" stroke-width="3" opacity="0.5"/>
+    <polyline points="${W-cornerSize+20},0 ${W-cornerSize+20},20 ${W-20},20 ${W-20},${cornerSize-20} ${W},${cornerSize-20}" fill="none" stroke="${gc}" stroke-width="1.5" opacity="0.3"/>
+    <polyline points="0,${H-cornerSize} 0,${H} ${cornerSize},${H}" fill="none" stroke="${gc}" stroke-width="3" opacity="0.5"/>
+    <polyline points="${cornerSize-20},${H} ${cornerSize-20},${H-20} 20,${H-20} 20,${H-cornerSize+20} 0,${H-cornerSize+20}" fill="none" stroke="${gc}" stroke-width="1.5" opacity="0.3"/>
+    <polyline points="${W},${H-cornerSize} ${W},${H} ${W-cornerSize},${H}" fill="none" stroke="${bc}" stroke-width="3" opacity="0.5"/>
+    <polyline points="${W-cornerSize+20},${H} ${W-cornerSize+20},${H-20} ${W-20},${H-20} ${W-20},${H-cornerSize+20} ${W},${H-cornerSize+20}" fill="none" stroke="${bc}" stroke-width="1.5" opacity="0.3"/>
+  `;
+
+  svg+='</svg>';
+  document.getElementById('bgCanvas').innerHTML=svg;
+}
+
+// =================== LUNAR ALGORITHM ===================
+const TZ=7;
+
+function jdFromDate(dd,mm,yy){
+  let a=Math.floor((14-mm)/12),y=yy+4800-a,m=mm+12*a-3;
+  let jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;
+  if(jd<2299161) jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-32083;
+  return jd;
+}
+
+function jdToDate(jd){
+  let a,b,c,d,e,m;
+  if(jd>2299160){a=jd+32044;b=Math.floor((4*a+3)/146097);c=a-Math.floor(b*146097/4);}
+  else{b=0;c=jd+32082;}
+  d=Math.floor((4*c+3)/1461);e=c-Math.floor(1461*d/4);m=Math.floor((5*e+2)/153);
+  return[e-Math.floor((153*m+2)/5)+1,m+3-12*Math.floor(m/10),b*100+d-4800+Math.floor(m/10)];
+}
+
+function newMoon(k){
+  let T=k/1236.85,T2=T*T,T3=T2*T,dr=Math.PI/180;
+  let J=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+  J+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+  let M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+  let Mp=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+  let F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+  let C=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
+  C-=0.4068*Math.sin(Mp*dr)+0.0161*Math.sin(dr*2*Mp)-0.0004*Math.sin(dr*3*Mp);
+  C+=0.0104*Math.sin(dr*2*F)-0.0051*Math.sin(dr*(M+Mp))-0.0074*Math.sin(dr*(M-Mp));
+  C+=0.0004*Math.sin(dr*(2*F+M))-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mp));
+  C+=0.0010*Math.sin(dr*(2*F-Mp))+0.0005*Math.sin(dr*(M+2*Mp));
+  let dt=T<-11?0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3:-0.000278+0.000265*T+0.000262*T2;
+  return J+C-dt;
+}
+
+function sunLong(jdn){
+  let T=(jdn-2451545)/36525,T2=T*T,dr=Math.PI/180;
+  let M=357.5291+35999.0503*T-0.0001559*T2;
+  let L=280.46645+36000.76983*T+0.0003032*T2;
+  let DL=(1.9146-0.004817*T-0.000014*T2)*Math.sin(dr*M)+(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.00029*Math.sin(dr*3*M);
+  let lam=L+DL-0.00569-0.00478*Math.sin((125.04-1934.136*T)*dr);
+  let th=lam*dr; th-=Math.PI*2*Math.floor(th/(Math.PI*2)); if(th<0) th+=Math.PI*2;
+  return Math.floor(th/Math.PI*6);
+}
+
+function getNMDay(k,tz){return Math.floor(newMoon(k)+0.5+tz/24);}
+
+function getLM11(yy,tz){
+  let k=Math.floor((yy-1900)*12.3685),nm=getNMDay(k,tz);
+  if(sunLong(nm-0.5-tz/24)>=9) nm=getNMDay(k-1,tz);
+  return nm;
+}
+
+function isLeap(k,tz){return sunLong(getNMDay(k,tz)-0.5-tz/24)!==sunLong(getNMDay(k+1,tz)-0.5-tz/24);}
+
+function sol2Lun(dd,mm,yy,tz){
+  let dn=jdFromDate(dd,mm,yy);
+  let k=Math.floor((dn-2415021.076998695)/29.530588853);
+  let ms=getNMDay(k+1,tz); if(ms>dn) ms=getNMDay(k,tz);
+  let a11=getLM11(yy,tz),b11=a11;
+  let ly,ll=0,lm,ld=dn-ms+1;
+  if(a11>=ms){ly=yy;a11=getLM11(yy-1,tz);}else{ly=yy+1;b11=getLM11(yy+1,tz);}
+  let diff=Math.floor((ms-a11)/29); lm=diff+11;
+  if(b11-a11>365){
+    let lmd=Math.floor((ms-a11)/29);
+    for(let i=0;i<=lmd;i++){
+      if(isLeap(k-diff+i,tz)){
+        if(i===lmd-1){ll=1;lm--;break;}else if(i<lmd-1) lm--;
+      }
+    }
+  }
+  if(lm>12) lm-=12;
+  if(lm>=11&&diff<4) ly--;
+  return[ld,lm,ly,ll];
+}
+
+function lun2Sol(ld,lm,ly){
+  let k=Math.floor((ly-1900)*12.3685);
+  let a11=getLM11(ly,TZ);
+  let off=lm-11; if(off<0) off+=12;
+  let nm=getNMDay(k+off,TZ);
+  while(nm<=a11) nm=getNMDay(++k,TZ);
+  return jdToDate(nm+ld-1);
+}
+
+// =================== CAN CHI ===================
+const CAN=['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+const CHI=['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+const ANIMAL=['🐭','🐂','🐯','🐰','🐲','🐍','🐴','🐑','🐵','🐓','🐶','🐷'];
+
+function getCC(y){return{can:CAN[(y-4)%10],chi:CHI[(y-4)%12],an:ANIMAL[(y-4)%12],full:CAN[(y-4)%10]+' '+CHI[(y-4)%12]};}
+function getCCDay(jd){return CAN[(jd+9)%10]+' '+CHI[(jd+1)%12];}
+function getCCMonth(lm,ly){return CAN[((ly*12+lm+3)%10+10)%10]+' '+CHI[(lm+1)%12];}
+
+// =================== NGÀY LỄ ===================
+const SOL_HOL=[
+  {m:1,d:1,name:'Tết Dương Lịch',t:'nghi',np:true,desc:'Ngày đầu năm mới Dương lịch. Nghỉ lễ toàn quốc.'},
+  {m:2,d:3,name:'Ngày thành lập Đảng CSVN',t:'le',np:false,desc:'Kỷ niệm Đảng Cộng sản Việt Nam thành lập 3/2/1930.'},
+  {m:3,d:8,name:'Quốc tế Phụ nữ 8/3',t:'le',np:false,desc:'Ngày Quốc tế Phụ nữ – tôn vinh người phụ nữ trên toàn thế giới.'},
+  {m:4,d:30,name:'Giải phóng miền Nam 30/4',t:'nghi',np:true,desc:'Kỷ niệm Giải phóng miền Nam, thống nhất đất nước (30/4/1975). Nghỉ lễ.'},
+  {m:5,d:1,name:'Quốc tế Lao động 1/5',t:'nghi',np:true,desc:'Ngày Quốc tế Lao động. Nghỉ lễ toàn quốc.'},
+  {m:5,d:7,name:'Chiến thắng Điện Biên Phủ',t:'le',np:false,desc:'Kỷ niệm chiến thắng Điện Biên Phủ 7/5/1954.'},
+  {m:5,d:19,name:'Sinh nhật Bác Hồ 19/5',t:'le',np:false,desc:'Kỷ niệm ngày sinh Chủ tịch Hồ Chí Minh 19/5/1890.'},
+  {m:6,d:1,name:'Quốc tế Thiếu nhi 1/6',t:'le',np:false,desc:'Ngày Quốc tế Thiếu nhi – ngày hội của trẻ em.'},
+  {m:7,d:27,name:'Ngày Thương binh Liệt sĩ',t:'le',np:false,desc:'Tưởng nhớ các thương binh, liệt sĩ hy sinh vì Tổ quốc.'},
+  {m:8,d:19,name:'Cách mạng Tháng Tám',t:'le',np:false,desc:'Kỷ niệm Cách mạng tháng Tám 1945 – mùa Thu lịch sử.'},
+  {m:9,d:2,name:'Quốc khánh 2/9',t:'nghi',np:true,desc:'Ngày Quốc khánh nước CHXHCN Việt Nam. Nghỉ lễ toàn quốc.'},
+  {m:10,d:10,name:'Giải phóng Thủ đô 10/10',t:'le',np:false,desc:'Kỷ niệm Giải phóng Thủ đô Hà Nội 10/10/1954.'},
+  {m:10,d:20,name:'Ngày Phụ nữ Việt Nam 20/10',t:'le',np:false,desc:'Ngày Phụ nữ Việt Nam – tôn vinh người phụ nữ Việt.'},
+  {m:11,d:20,name:'Ngày Nhà giáo VN 20/11',t:'le',np:false,desc:'Ngày Hiến chương Nhà giáo Việt Nam 20/11.'},
+  {m:12,d:22,name:'Ngày QĐND VN 22/12',t:'le',np:false,desc:'Kỷ niệm Ngày thành lập Quân đội Nhân dân Việt Nam 22/12/1944.'},
+];
+
+const LUN_HOL=[
+  {lm:1,ld:1,name:'🧧 Tết Nguyên Đán Mùng 1',t:'tet',np:true,desc:'Ngày đầu tiên của năm mới Âm lịch – Lễ Tết lớn nhất Việt Nam.'},
+  {lm:1,ld:2,name:'🧧 Tết Nguyên Đán Mùng 2',t:'tet',np:true,desc:'Mùng 2 Tết – nghỉ lễ toàn quốc, thăm bên ngoại.'},
+  {lm:1,ld:3,name:'🧧 Tết Nguyên Đán Mùng 3',t:'tet',np:true,desc:'Mùng 3 Tết – nghỉ lễ toàn quốc, thăm thầy cô.'},
+  {lm:1,ld:4,name:'🧧 Tết Nguyên Đán Mùng 4',t:'tet',np:true,desc:'Mùng 4 Tết – nghỉ lễ.'},
+  {lm:1,ld:5,name:'🧧 Tết Nguyên Đán Mùng 5',t:'tet',np:true,desc:'Mùng 5 Tết – nghỉ lễ.'},
+  {lm:1,ld:15,name:'🌕 Rằm Tháng Giêng (Nguyên Tiêu)',t:'am',np:false,desc:'Rằm tháng Giêng – trăng tròn đầu năm, lễ cúng rằm lớn nhất.'},
+  {lm:3,ld:10,name:'🏯 Giỗ Tổ Hùng Vương',t:'nghi',np:true,desc:'Lễ Giỗ Tổ Hùng Vương – 10/3 Âm lịch. Nghỉ lễ toàn quốc.'},
+  {lm:4,ld:15,name:'🪷 Lễ Phật Đản',t:'am',np:false,desc:'Kỷ niệm Đức Phật Thích Ca Mâu Ni đản sinh – Rằm tháng 4.'},
+  {lm:5,ld:5,name:'🍑 Tết Đoan Ngọ (5/5 âm)',t:'am',np:false,desc:'Tết Đoan Ngọ – diệt sâu bọ, ăn rượu nếp, hoa quả đầu mùa.'},
+  {lm:7,ld:1,name:'👻 Mở cửa tháng cô hồn',t:'am',np:false,desc:'Ngày đầu tháng 7 âm – tháng cô hồn, tháng xá tội vong nhân.'},
+  {lm:7,ld:15,name:'🕯 Lễ Vu Lan – Rằm tháng 7',t:'am',np:false,desc:'Lễ Vu Lan Báo Hiếu. Cúng cô hồn, phóng sinh, đeo hoa hồng.'},
+  {lm:8,ld:15,name:'🏮 Tết Trung Thu',t:'am',np:false,desc:'Rằm tháng 8 – Tết Trung Thu, múa lân, rước đèn, bánh nướng bánh dẻo.'},
+  {lm:9,ld:9,name:'🍂 Tết Trùng Cửu (9/9 âm)',t:'am',np:false,desc:'Tết Trùng Dương – ngày leo cao ngắm cảnh, uống rượu hoa cúc.'},
+  {lm:10,ld:10,name:'🌾 Tết Cơm Mới (10/10 âm)',t:'am',np:false,desc:'Cúng cơm mới sau mùa gặt – cảm tạ trời đất, tổ tiên.'},
+  {lm:11,ld:11,name:'❄ Tết Đông Chí',t:'am',np:false,desc:'Tiết Đông Chí – ngày ngắn nhất trong năm, cúng chè trôi nước.'},
+  {lm:12,ld:23,name:'🐟 Ông Công Ông Táo (23 tháng Chạp)',t:'am',np:false,desc:'Lễ tiễn Táo Quân lên chầu Ngọc Hoàng – 23 tháng Chạp Âm lịch.'},
+  {lm:12,ld:30,name:'🎆 Tất Niên – 30 Tết',t:'tet',np:false,desc:'Ngày 30 Tết hoặc 29 nếu tháng thiếu – đêm Giao thừa, bước sang năm mới.'},
+];
+
+function buildYear(year){
+  let ev=[];
+  SOL_HOL.forEach(h=>{
+    ev.push({date:new Date(year,h.m-1,h.d),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:true});
+  });
+  LUN_HOL.forEach(h=>{
+    for(let ly=year-1;ly<=year;ly++){
+      try{
+        let [sd,sm,sy]=lun2Sol(h.ld,h.lm,ly);
+        if(sy===year){
+          ev.push({date:new Date(year,sm-1,sd),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:false,ldate:`${h.ld}/${h.lm} âm`});
+        }
+      }catch(e){}
+    }
+  });
+  let seen=new Set();
+  ev=ev.filter(e=>{let k=e.date.toDateString()+e.name;if(seen.has(k))return false;seen.add(k);return true;});
+  return ev.sort((a,b)=>a.date-b.date);
+}
+
+// =================== STATE ===================
+let today=new Date();
+let viewDate=new Date(today.getFullYear(),today.getMonth(),1);
+let evCache={};
+let activeF=new Set(['all']);
+let dimMode=false;
+
+function getEv(year){ if(!evCache[year]) evCache[year]=buildYear(year); return evCache[year]; }
+function getEvDate(d){ return getEv(d.getFullYear()).filter(e=>e.date.toDateString()===d.toDateString()); }
+
+// =================== FILTER ===================
+function setFilter(f){
+  if(f==='dim'){
+    dimMode=!dimMode;
+    document.querySelector('[data-f="dim"]').classList.toggle('active',dimMode);
+    renderCalendar(); return;
+  }
+  if(f==='all'){
+    activeF=new Set(['all']); dimMode=false;
+    document.querySelector('[data-f="dim"]').classList.remove('active');
+  } else {
+    activeF.delete('all');
+    if(activeF.has(f)){ activeF.delete(f); if(activeF.size===0) activeF.add('all'); }
+    else activeF.add(f);
+  }
+  document.querySelectorAll('.filter-chip:not([data-f="dim"])').forEach(c=>c.classList.toggle('active',activeF.has(c.dataset.f)));
+  renderCalendar();
+}
+
+function cellHL(ev,dow){
+  if(activeF.has('all')) return '';
+  const chk={
+    tet:ev.some(e=>e.t==='tet'),
+    nghi:ev.some(e=>e.np),
+    le:ev.some(e=>e.t==='le'),
+    am:ev.some(e=>e.t==='am'),
+    cn:dow===0, t7:dow===6
+  };
+  let matched=false; let cls='';
+  if(activeF.has('tet')&&chk.tet){cls='hl-tet';matched=true;}
+  if(activeF.has('nghi')&&chk.nghi){cls='hl-nghi';matched=true;}
+  if(activeF.has('le')&&chk.le){cls='hl-le';matched=true;}
+  if(activeF.has('am')&&chk.am){cls='hl-am';matched=true;}
+  if(activeF.has('cn')&&chk.cn){cls='hl-cn';matched=true;}
+  if(activeF.has('t7')&&chk.t7){cls='hl-t7';matched=true;}
+  if(dimMode && !matched && !activeF.has('all')) return 'dimmed';
+  return cls;
+}
+
+// =================== RENDER ===================
+const MN=['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+
+function renderCalendar(){
+  let year=viewDate.getFullYear(),month=viewDate.getMonth();
+  let cc=getCC(year);
+  document.getElementById('calMonthName').textContent=MN[month];
+  document.getElementById('calYearName').textContent=`${year} – ${cc.an} ${cc.full}`;
+
+  let firstDay=new Date(year,month,1).getDay();
+  let dim=new Date(year,month+1,0).getDate();
+  let dprev=new Date(year,month,0).getDate();
+
+  let yev=getEv(year);
+  let em={};
+  yev.forEach(e=>{let k=e.date.toDateString();if(!em[k])em[k]=[];em[k].push(e);});
+
+  let g=document.getElementById('calGrid'); g.innerHTML='';
+  for(let i=firstDay-1;i>=0;i--) g.appendChild(mkCell(dprev-i,month-1,year,true,em));
+  for(let d=1;d<=dim;d++) g.appendChild(mkCell(d,month,year,false,em));
+  let rem=(firstDay+dim)%7; if(rem>0){ for(let d=1;d<=7-rem;d++) g.appendChild(mkCell(d,month+1,year,true,em)); }
+}
+
+function mkCell(day,month,year,other,em){
+  let dt=new Date(year,month,day);
+  let dk=dt.toDateString(), dow=dt.getDay();
+  let [ld,lm,ly,ll]=sol2Lun(day,dt.getMonth()+1,dt.getFullYear(),TZ);
+  let ev=em[dk]||[];
+  let isToday=dk===today.toDateString();
+  let hasNP=ev.some(e=>e.np);
+  let hasAm=ev.some(e=>e.t==='am');
+
+  let cell=document.createElement('div');
+  cell.className='cal-cell';
+  if(other) cell.classList.add('other-month');
+  if(isToday) cell.classList.add('today');
+  if(hasNP) cell.classList.add('holiday');
+  if(dow===0) cell.classList.add('sunday');
+  if(dow===6) cell.classList.add('saturday');
+
+  let hl=cellHL(ev,dow);
+  if(hl) cell.classList.add(hl);
+
+  let h=`<div class="solar-num">${day}</div>`;
+  h+=`<div class="lunar-num">${ld}/${lm}${ll?'(n)':''}</div>`;
+  if(hasAm) h+=`<div class="am-dot"></div>`;
+
+  let shown=0;
+  ev.forEach(e=>{
+    if(shown<2&&e.t!=='am'){
+      let n=e.name.replace(/🧧|🌕|🏯|🪷|🍑|👻|🕯|🏮|🍂|🌾|❄|🐟|🎆/g,'').replace('Tết Nguyên Đán ','').replace('Ngày Quốc tế ','').trim();
+      if(n.length>13) n=n.slice(0,11)+'...';
+      h+=`<div class="event-tag ${e.t}">${n}</div>`; shown++;
+    }
+  });
+
+  cell.innerHTML=h;
+  cell.addEventListener('click',()=>showModal(dt));
+  return cell;
+}
+
+// =================== TODAY INFO ===================
+function renderTodayInfo(date){
+  let d=date.getDate(),m=date.getMonth()+1,y=date.getFullYear();
+  let [ld,lm,ly,ll]=sol2Lun(d,m,y,TZ);
+  let jd=jdFromDate(d,m,y);
+  let ccY=getCC(ly), ccD=getCCDay(jd), ccM=getCCMonth(lm,ly);
+  const DOW=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+
+  document.getElementById('todaySolarBig').textContent=d;
+  document.getElementById('todaySolarSub').textContent=`${DOW[date.getDay()]}, ${d}/${m}/${y}`;
+  document.getElementById('todayLunarBig').textContent=`${ld} tháng ${lm}`;
+
+  let ev=getEvDate(date);
+  let evH=ev.length>0
+    ? ev.map(e=>`<span class="event-tag ${e.t}" style="font-size:0.72rem;padding:2px 7px;margin:2px 1px;display:inline-block;">${e.name}</span>`).join('')
+    : '<span style="color:#ccc;font-size:0.77rem;">Không có sự kiện đặc biệt</span>';
+
+  document.getElementById('todayInfoRows').innerHTML=`
+    <div class="info-row"><span class="info-label">Âm lịch</span><span class="info-value red">${ld}/${lm}/${ly}${ll?' (nhuận)':''}</span></div>
+    <div class="info-row"><span class="info-label">Năm âm lịch</span><span class="info-value gold">${ccY.full} ${ccY.an}</span></div>
+    <div class="info-row"><span class="info-label">Can Chi ngày</span><span class="info-value">${ccD}</span></div>
+    <div class="info-row"><span class="info-label">Can Chi tháng</span><span class="info-value">${ccM}</span></div>
+    <div class="info-row" style="flex-direction:column;gap:5px;"><span class="info-label">Hôm nay</span><div style="margin-top:3px;">${evH}</div></div>
+  `;
+}
+
+// =================== EVENT TABS ===================
+function renderTabs(year,month){
+  let yev=getEv(year);
+  let upcoming=yev.filter(e=>{let df=(e.date-today)/86400000;return df>=0&&df<=60;});
+  let mev=yev.filter(e=>e.date.getFullYear()===year&&e.date.getMonth()===month);
+  renderList('tab-upcoming',upcoming.slice(0,15));
+  renderList('tab-month',mev);
+  renderList('tab-year',yev);
+}
+
+function renderList(id,ev){
+  let el=document.getElementById(id);
+  if(!ev.length){el.innerHTML='<div style="text-align:center;color:#ccc;padding:20px;font-size:0.82rem;">Không có sự kiện</div>';return;}
+  const C={tet:'#c0392b',nghi:'#1e8449',le:'#c9930a',am:'#7d3c98'};
+  const D={tet:'dot-do',nghi:'dot-xanh',le:'dot-vang',am:'dot-tim'};
+  const L={tet:'Tết',nghi:'Nghỉ lễ',le:'Kỷ niệm',am:'Ngày âm'};
+  el.innerHTML=ev.map(e=>{
+    let d=e.date.getDate(),m=e.date.getMonth()+1,y=e.date.getFullYear();
+    return `<div class="event-item">
+      <div class="edot ${D[e.t]||'dot-do'}" style="background:${C[e.t]||'#888'}"></div>
+      <div>
+        <div class="ev-name">${e.name}</div>
+        <div class="ev-date">${d}/${m}/${y}${e.ldate?' · '+e.ldate:''}</div>
+        <span class="ev-badge" style="background:${C[e.t]||'#888'}">${L[e.t]||e.t}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =================== MODAL ===================
+function showModal(date){
+  let d=date.getDate(),m=date.getMonth()+1,y=date.getFullYear();
+  let [ld,lm,ly,ll]=sol2Lun(d,m,y,TZ);
+  let jd=jdFromDate(d,m,y);
+  let ccY=getCC(ly), ccD=getCCDay(jd), ccM=getCCMonth(lm,ly);
+  const DOW=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+  let ev=getEvDate(date);
+
+  document.getElementById('modalTitle').textContent=`${DOW[date.getDay()]}, ${d} tháng ${m}`;
+
+  const bg={tet:'#fff2e5',nghi:'#e8fdf0',le:'#fffee0',am:'#f5eeff'};
+  const bl={tet:'#e8820a',nghi:'#2ecc71',le:'#f0c030',am:'#9b59b6'};
+  const ct={tet:'#7a2000',nghi:'#0d5c2e',le:'#5c4200',am:'#4a1a7a'};
+
+  let evH='';
+  if(ev.length){
+    evH=`<div class="modal-events"><div class="modal-ev-title">🎉 Sự kiện ngày này:</div>
+      ${ev.map(e=>`<div class="modal-ev-item" style="background:${bg[e.t]||'#f5f5f5'};border-left:3px solid ${bl[e.t]||'#ccc'}">
+        <div style="font-weight:800;font-size:0.85rem;color:${ct[e.t]||'#333'}">${e.name}</div>
+        <div style="font-size:0.74rem;color:#888;margin-top:5px;line-height:1.5">${e.desc}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  let dayOfYear=Math.floor((date-new Date(y,0,1))/86400000)+1;
+
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-day">${d}</div>
+    <div class="modal-sub">${DOW[date.getDay()]}, ngày ${d} tháng ${m} năm ${y}</div>
+    <div class="modal-row"><span class="lb">Âm lịch</span><span class="vl hl">${ld} tháng ${lm} năm ${ly}${ll?' (nhuận)':''}</span></div>
+    <div class="modal-row"><span class="lb">Năm Can Chi</span><span class="vl">${ccY.full} ${ccY.an}</span></div>
+    <div class="modal-row"><span class="lb">Can Chi ngày</span><span class="vl">${ccD}</span></div>
+    <div class="modal-row"><span class="lb">Can Chi tháng</span><span class="vl">${ccM}</span></div>
+    <div class="modal-row"><span class="lb">Ngày trong năm</span><span class="vl">Ngày ${dayOfYear} / 365</span></div>
+    ${evH}
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+// =================== DATE PICKER ===================
+function initDP(){
+  let dpM=document.getElementById('dpMonth');
+  let dpY=document.getElementById('dpYear');
+  MN.forEach((n,i)=>{ let o=document.createElement('option');o.value=i;o.textContent=n;dpM.appendChild(o); });
+  let cur=today.getFullYear();
+  for(let y=cur-10;y<=cur+10;y++){ let o=document.createElement('option');o.value=y;o.textContent=y;dpY.appendChild(o); }
+  dpM.value=viewDate.getMonth(); dpY.value=viewDate.getFullYear();
+  dpM.addEventListener('change',updDPLunar);
+  dpY.addEventListener('change',updDPLunar);
+  updDPLunar();
+}
+
+function updDPLunar(){
+  let y=parseInt(document.getElementById('dpYear').value);
+  let m=parseInt(document.getElementById('dpMonth').value)+1;
+  let cc=getCC(y);
+  // Get approx lunar month for display
+  let [ld,lm,ly]=sol2Lun(15,m,y,TZ);
+  document.getElementById('dpLunarInfo').textContent=`Tháng ${lm} âm lịch · Năm ${cc.full} ${cc.an}`;
+}
+
+function toggleDP(e){
+  e.stopPropagation();
+  let w=document.getElementById('dpWrap');
+  let open=w.classList.contains('open');
+  document.getElementById('dpMonth').value=viewDate.getMonth();
+  document.getElementById('dpYear').value=viewDate.getFullYear();
+  updDPLunar();
+  w.classList.toggle('open',!open);
+}
+
+function closeDP(){ document.getElementById('dpWrap').classList.remove('open'); }
+
+function applyDP(){
+  let m=parseInt(document.getElementById('dpMonth').value);
+  let y=parseInt(document.getElementById('dpYear').value);
+  viewDate=new Date(y,m,1);
+  renderCalendar(); renderTabs(y,m); closeDP();
+}
+
+// =================== CLOCK ===================
+function tick(){
+  let now=new Date(); today=now;
+  let h=String(now.getHours()).padStart(2,'0');
+  let min=String(now.getMinutes()).padStart(2,'0');
+  let s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clockDisplay').textContent=`${h}:${min}:${s}`;
+  const DOW=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+  let d=now.getDate(),m=now.getMonth()+1,y=now.getFullYear();
+  document.getElementById('dateDisplay').textContent=`${DOW[now.getDay()]}, ${d}/${m}/${y} · GMT+7`;
+}
+
+function updateBanner(){
+  let d=today.getDate(),m=today.getMonth()+1,y=today.getFullYear();
+  let [ld,lm,ly]=sol2Lun(d,m,y,TZ); let cc=getCC(ly);
+  let ev=getEvDate(today);
+  let txt=`🗓 Hôm nay: ${d}/${m}/${y} · ${ld}/${lm} Âm lịch · Năm ${cc.full} ${cc.an}`;
+  if(ev.length) txt+=' · 🎉 '+ev.map(e=>e.name.replace(/🧧|🌕|🏯|🪷|🍑|👻|🕯|🏮|🍂|🌾|❄|🐟|🎆/g,'')).join(' | ');
+  document.getElementById('todayBanner').textContent=txt;
+}
+
+function goToday(){
+  viewDate=new Date(today.getFullYear(),today.getMonth(),1);
+  renderCalendar(); renderTodayInfo(today);
+  renderTabs(today.getFullYear(),today.getMonth());
+}
+
+// =================== INIT ===================
+window.addEventListener('DOMContentLoaded',()=>{
+  drawBG();
+  tick(); setInterval(tick,1000);
+  initDP();
+  renderCalendar();
+  renderTodayInfo(today);
+  updateBanner();
+  renderTabs(today.getFullYear(),today.getMonth());
+
+  document.getElementById('prevMonth').addEventListener('click',()=>{
+    viewDate.setMonth(viewDate.getMonth()-1);
+    renderCalendar(); renderTabs(viewDate.getFullYear(),viewDate.getMonth());
+  });
+
+  document.getElementById('nextMonth').addEventListener('click',()=>{
+    viewDate.setMonth(viewDate.getMonth()+1);
+    renderCalendar(); renderTabs(viewDate.getFullYear(),viewDate.getMonth());
+  });
+
+  document.getElementById('modal').addEventListener('click',e=>{
+    if(e.target===document.getElementById('modal')) closeModal();
+  });
+
+  document.addEventListener('click',e=>{
+    let w=document.getElementById('dpWrap');
+    let t=document.getElementById('calMonthTitle');
+    if(!t.contains(e.target)) w.classList.remove('open');
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+});
+
+window.addEventListener('resize',()=>drawBG());
+</script>
+</body>
+</html>
