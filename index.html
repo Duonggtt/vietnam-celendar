@@ -760,106 +760,141 @@ function drawBG() {
   document.getElementById('bgCanvas').innerHTML=svg;
 }
 
-// =================== LUNAR ALGORITHM ===================
-const TZ=7;
+// =================== LUNAR ALGORITHM (Thuật toán Hồ Ngọc Đức) ===================
+const TZ=7; // Múi giờ Việt Nam GMT+7
 
+// Chuyển ngày dương lịch sang số ngày Julius
 function jdFromDate(dd,mm,yy){
-  let a=Math.floor((14-mm)/12),y=yy+4800-a,m=mm+12*a-3;
+  let a=Math.floor((14-mm)/12);
+  let y=yy+4800-a;
+  let m=mm+12*a-3;
   let jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;
-  if(jd<2299161) jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-32083;
+  if(jd<2299161){
+    jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-32083;
+  }
   return jd;
 }
 
+// Chuyển số ngày Julius sang ngày dương lịch
 function jdToDate(jd){
-  let a,b,c,d,e,m;
-  if(jd>2299160){a=jd+32044;b=Math.floor((4*a+3)/146097);c=a-Math.floor(b*146097/4);}
-  else{b=0;c=jd+32082;}
-  d=Math.floor((4*c+3)/1461);e=c-Math.floor(1461*d/4);m=Math.floor((5*e+2)/153);
-  return[e-Math.floor((153*m+2)/5)+1,m+3-12*Math.floor(m/10),b*100+d-4800+Math.floor(m/10)];
+  let a,b,c;
+  if(jd>2299160){
+    a=jd+32044;
+    b=Math.floor((4*a+3)/146097);
+    c=a-Math.floor(b*146097/4);
+  }else{
+    b=0;
+    c=jd+32082;
+  }
+  let d=Math.floor((4*c+3)/1461);
+  let e=c-Math.floor(1461*d/4);
+  let m=Math.floor((5*e+2)/153);
+  let day=e-Math.floor((153*m+2)/5)+1;
+  let month=m+3-12*Math.floor(m/10);
+  let year=b*100+d-4800+Math.floor(m/10);
+  return[day,month,year];
 }
 
+// Tính toán trăng non (new moon)
 function newMoon(k){
-  let T=k/1236.85,T2=T*T,T3=T2*T,dr=Math.PI/180;
-  let J=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
-  J+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+  let T=k/1236.85;
+  let T2=T*T;
+  let T3=T2*T;
+  let dr=Math.PI/180;
+  let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+  Jd1=Jd1+0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
   let M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
-  let Mp=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+  let Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
   let F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
-  let C=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
-  C-=0.4068*Math.sin(Mp*dr)+0.0161*Math.sin(dr*2*Mp)-0.0004*Math.sin(dr*3*Mp);
-  C+=0.0104*Math.sin(dr*2*F)-0.0051*Math.sin(dr*(M+Mp))-0.0074*Math.sin(dr*(M-Mp));
-  C+=0.0004*Math.sin(dr*(2*F+M))-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mp));
-  C+=0.0010*Math.sin(dr*(2*F-Mp))+0.0005*Math.sin(dr*(M+2*Mp));
-  let dt=T<-11?0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3:-0.000278+0.000265*T+0.000262*T2;
-  return J+C-dt;
+  let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
+  C1=C1-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(dr*2*Mpr);
+  C1=C1-0.0004*Math.sin(dr*3*Mpr);
+  C1=C1+0.0104*Math.sin(dr*2*F)-0.0051*Math.sin(dr*(M+Mpr));
+  C1=C1-0.0074*Math.sin(dr*(M-Mpr))+0.0004*Math.sin(dr*(2*F+M));
+  C1=C1-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mpr));
+  C1=C1+0.0010*Math.sin(dr*(2*F-Mpr))+0.0005*Math.sin(dr*(2*Mpr+M));
+  let deltat;
+  if(T<-11){
+    deltat=0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3;
+  }else{
+    deltat=-0.000278+0.000265*T+0.000262*T2;
+  }
+  return Jd1+C1-deltat;
 }
 
-function sunLong(jdn){
-  let T=(jdn-2451545.0)/36525,T2=T*T,dr=Math.PI/180;
+// Tính kinh độ mặt trời (0-11 tương ứng 12 cung hoàng đạo)
+function sunLongitude(jdn){
+  let T=(jdn-2451545.0)/36525;
+  let T2=T*T;
+  let dr=Math.PI/180;
   let M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
   let L0=280.46645+36000.76983*T+0.0003032*T2;
   let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);
-  DL+=(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
+  DL=DL+(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
   let L=L0+DL;
-  L=L-360*Math.floor(L/360);
-  return Math.floor(L/30);
+  L=L*dr;
+  L=L-Math.PI*2*(Math.floor(L/(Math.PI*2)));
+  return Math.floor(L/Math.PI*6);
 }
 
-function getNMDay(k,tz){return Math.floor(newMoon(k)+0.5+tz/24.0);}
+// Lấy số ngày Julius của ngày trăng non thứ k
+function getNewMoonDay(k,timeZone){
+  return Math.floor(newMoon(k)+0.5+timeZone/24);
+}
 
-function getLM11(yy,tz){
-  let off=jdFromDate(31,12,yy)-2415021.076998695;
+// Tìm ngày trăng non thứ 11 (tháng 11 âm lịch) của năm dương lịch
+function getLunarMonth11(yy,timeZone){
+  let off=jdFromDate(31,12,yy)-2415021;
   let k=Math.floor(off/29.530588853);
-  let nm=getNMDay(k,tz);
-  let sunL=sunLong(nm);
-  if(sunL>=9){
-    nm=getNMDay(k-1,tz);
+  let nm=getNewMoonDay(k,timeZone);
+  let sunLong=sunLongitude(nm);
+  if(sunLong>=9){
+    nm=getNewMoonDay(k-1,timeZone);
   }
   return nm;
 }
 
-function getLeapMonthOffset(a11,b11,tz){
-  let k=Math.floor(0.5+(a11-2415021.076998695)/29.530588853);
-  let last=0,i=1;
-  let arc=sunLong(getNMDay(k+i,tz));
+// Tìm tháng nhuận trong năm âm lịch
+function getLeapMonthOffset(a11,b11,timeZone){
+  let k=Math.floor((a11-2415021.0)/29.530588853+0.5);
+  let last=0;
+  let i=1;
+  let arc=sunLongitude(getNewMoonDay(k+i,timeZone));
   do{
     last=arc;
     i++;
-    arc=sunLong(getNMDay(k+i,tz));
-  }while(arc!==last && i<14);
+    arc=sunLongitude(getNewMoonDay(k+i,timeZone));
+  }while(arc!=last && i<14);
   return i-1;
 }
 
-function sol2Lun(dd,mm,yy,tz){
+// Chuyển dương lịch sang âm lịch
+function sol2Lun(dd,mm,yy,timeZone){
   let dayNumber=jdFromDate(dd,mm,yy);
-  let k=Math.floor((dayNumber-2415021.076998695)/29.530588853);
-  let monthStart=getNMDay(k+1,tz);
+  let k=Math.floor((dayNumber-2415021.0)/29.530588853);
+  let monthStart=getNewMoonDay(k+1,timeZone);
   if(monthStart>dayNumber){
-    monthStart=getNMDay(k,tz);
+    monthStart=getNewMoonDay(k,timeZone);
   }
-  let a11=getLM11(yy,tz);
+  let a11=getLunarMonth11(yy,timeZone);
   let b11=a11;
+  let lunarYear;
   if(a11>=monthStart){
-    let lunarYear=yy;
-    a11=getLM11(yy-1,tz);
-    return convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz);
+    lunarYear=yy;
+    a11=getLunarMonth11(yy-1,timeZone);
   }else{
-    let lunarYear=yy+1;
-    b11=getLM11(yy+1,tz);
-    return convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz);
+    lunarYear=yy+1;
+    b11=getLunarMonth11(yy+1,timeZone);
   }
-}
-
-function convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz){
   let lunarDay=dayNumber-monthStart+1;
   let diff=Math.floor((monthStart-a11)/29);
   let lunarLeap=0;
   let lunarMonth=diff+11;
   if(b11-a11>365){
-    let leapMonthDiff=getLeapMonthOffset(a11,b11,tz);
+    let leapMonthDiff=getLeapMonthOffset(a11,b11,timeZone);
     if(diff>=leapMonthDiff){
       lunarMonth=diff+10;
-      if(diff===leapMonthDiff){
+      if(diff==leapMonthDiff){
         lunarLeap=1;
       }
     }
@@ -867,37 +902,73 @@ function convertToLunarDate(dayNumber,monthStart,a11,b11,lunarYear,tz){
   if(lunarMonth>12){
     lunarMonth=lunarMonth-12;
   }
-  if(lunarMonth>=11&&diff<4){
+  if(lunarMonth>=11 && diff<4){
     lunarYear-=1;
   }
   return[lunarDay,lunarMonth,lunarYear,lunarLeap];
 }
 
-function lun2Sol(ld,lm,ly,leap){
-  if(lm<11){
-    ly=ly+1;
+// Lấy số ngày của tháng âm lịch
+function getLunarMonthDays(mm,yy,leap){
+  let off;
+  if(mm<11){
+    off=yy;
+  }else{
+    off=yy-1;
   }
-  let a11=getLM11(ly-1,TZ);
-  let b11=getLM11(ly,TZ);
-  let k=Math.floor(0.5+(a11-2415021.076998695)/29.530588853);
-  let off=lm-11;
-  if(off<0){
-    off+=12;
+  let a11=getLunarMonth11(off,TZ);
+  let b11=getLunarMonth11(off+1,TZ);
+  let k=Math.floor(0.5+(a11-2415021.0)/29.530588853);
+  let monthOff=mm-11;
+  if(monthOff<0){
+    monthOff+=12;
   }
   if(b11-a11>365){
     let leapOff=getLeapMonthOffset(a11,b11,TZ);
-    let leapMonth=leapOff-2;
-    if(leapMonth<0){
-      leapMonth+=12;
-    }
-    if(leap&&lm!==leapMonth){
-      return[0,0,0];
-    }else if(leap||off>=leapOff){
-      off+=1;
+    if(leap && monthOff==leapOff-2){
+      monthOff=leapOff;
+    }else if(monthOff>=leapOff){
+      monthOff+=1;
     }
   }
-  let monthStart=getNMDay(k+off,TZ);
-  return jdToDate(monthStart+ld-1);
+  let monthStart=getNewMoonDay(k+monthOff,TZ);
+  let monthEnd=getNewMoonDay(k+monthOff+1,TZ);
+  return monthEnd-monthStart;
+}
+
+// Chuyển âm lịch sang dương lịch
+function lun2Sol(dd,mm,yy,leap){
+  let off;
+  if(mm<11){
+    off=yy;
+  }else{
+    off=yy-1;
+  }
+  let a11=getLunarMonth11(off,TZ);
+  let b11=getLunarMonth11(off+1,TZ);
+  let k=Math.floor(0.5+(a11-2415021.0)/29.530588853);
+  let monthOff=mm-11;
+  if(monthOff<0){
+    monthOff+=12;
+  }
+  if(b11-a11>365){
+    let leapOff=getLeapMonthOffset(a11,b11,TZ);
+    if(leap && monthOff==leapOff-2){
+      monthOff=leapOff;
+    }else if(monthOff>=leapOff){
+      monthOff+=1;
+    }
+  }
+  let monthStart=getNewMoonDay(k+monthOff,TZ);
+  let monthEnd=getNewMoonDay(k+monthOff+1,TZ);
+  let monthDays=monthEnd-monthStart;
+  
+  // Kiểm tra ngày có hợp lệ không
+  if(dd<1 || dd>monthDays){
+    return[0,0,0];
+  }
+  
+  return jdToDate(monthStart+dd-1);
 }
 
 // =================== CAN CHI ===================
@@ -954,11 +1025,39 @@ function buildYear(year){
     ev.push({date:new Date(year,h.m-1,h.d),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:true});
   });
   LUN_HOL.forEach(h=>{
-    for(let ly=year-1;ly<=year;ly++){
+    for(let ly=year-1;ly<=year+1;ly++){
       try{
-        let [sd,sm,sy]=lun2Sol(h.ld,h.lm,ly,0);
+        let lunarDay=h.ld;
+        let lunarMonth=h.lm;
+        
+        // Xử lý đặc biệt cho ngày 30 Tết
+        if(lunarDay===30 && lunarMonth===12){
+          let monthDays=getLunarMonthDays(lunarMonth,ly);
+          if(monthDays===29){
+            lunarDay=29; // Tháng chạp chỉ có 29 ngày -> dùng 29 làm Tất Niên
+          }
+        }
+        
+        let [sd,sm,sy]=lun2Sol(lunarDay,lunarMonth,ly,0);
         if(sy===year && sd>0){
-          ev.push({date:new Date(year,sm-1,sd),name:h.name,t:h.t,np:h.np,desc:h.desc,solar:false,ldate:`${h.ld}/${h.lm} âm`});
+          let eventName=h.name;
+          let ldate=`${h.ld}/${h.lm} âm`;
+          
+          // Cập nhật tên nếu 30 Tết thành 29 Tết  
+          if(h.ld===30 && h.lm===12 && lunarDay===29){
+            eventName=eventName.replace('30 Tết','29 Tết');
+            ldate=`29/12 âm`;
+          }
+          
+          ev.push({
+            date:new Date(sy,sm-1,sd),
+            name:eventName,
+            t:h.t,
+            np:h.np,
+            desc:h.desc,
+            solar:false,
+            ldate:ldate
+          });
         }
       }catch(e){}
     }
